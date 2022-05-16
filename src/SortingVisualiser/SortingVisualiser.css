@@ -1,0 +1,19 @@
+.array-container {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    background-color: lightskyblue;
+    align-items: flex-end;
+    min-width: 500px;
+    min-height: 500px;
+}
+
+.array-bar {
+    width: 3px;
+    background-color: black;
+    margin: 1px 1px;
+}
+
+.App {
+    background-color: yellow;
+}
