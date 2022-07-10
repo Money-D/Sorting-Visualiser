@@ -1,45 +1,136 @@
-export const mergeSort = (arr, start, end) => {
-    if (start >= end) {
-        return 
+export const selectionSort = (array, setArray) => {
+    for (let i = 0; i < array.length; i++) {
+        setTimeout(() => {
+            let arr = [...array]
+            let minIndex = i;
+            for (let j = i + 1; j < array.length; j++) {
+                if (arr[j].value < arr[minIndex].value) {
+                    minIndex = j
+                }
+            }
+            swapValue(arr, i, minIndex)
+            setArray(arr)
+        }, i * 50)
     }
-
-    const mid = start + Math.floor((end - start) / 2)
-    mergeSort(arr, start, mid)
-    mergeSort(arr, mid+1, end)
-
-    merge(arr, start, mid, mid+1, end)
 }
 
-const merge = (arr, start1, end1, start2, end2) => {
-    let temp = start1
+export const mergeSort = (array, setArray) => {
+    let arrayCopy = [...array]
+    let animations = []
+
+    mergeSortHelper(animations, arrayCopy, 0, array.length - 1)
+
+    const sleep = ms => new Promise(r => setTimeout(r, ms))
+
+    const animate = async () => {
+        for (let i in animations) {
+            await sleep(40)
+            const array = animations[i]
+            setArray(array)
+        }
+
+    }
+
+    animate()
+}
+
+const mergeSortHelper = (arrays, mainArr, start, end) => {
+    if (start >= end) { return }
+
+    const mid = start + Math.floor((end - start) / 2)
+    mergeSortHelper(arrays, mainArr, start, mid)
+    mergeSortHelper(arrays, mainArr, mid + 1, end)
+
+    // MERGE
+    let start1 = start
+    let end1 = mid
+    let start2 = mid + 1
+    let end2 = end
+
+    let tempStart = start1
     let merged = []
+
     while (start1 <= end1 && start2 <= end2) {
-        if (arr[start1] <= arr[start2]) {
-            merged.push(arr[start1])
+        if (mainArr[start1].value <= mainArr[start2].value) {
+            merged.push({
+                value: mainArr[start1].value,
+                id: mainArr[start1].id
+            })
             start1++
         } else {
-            merged.push(arr[start2])
+            merged.push({
+                value: mainArr[start2].value,
+                id: mainArr[start2].id
+            })
             start2++
         }
     }
 
     while (start1 <= end1) {
-        merged.push(arr[start1])
+        merged.push({
+            value: mainArr[start1].value,
+            id: mainArr[start1].id
+        })
         start1++
     }
 
     while (start2 <= end2) {
-        merged.push(arr[start2])
+        merged.push({
+            value: mainArr[start2].value,
+            id: mainArr[start2].id
+        })
         start2++
     }
 
+    Array.prototype.splice.apply(mainArr, [tempStart, merged.length].concat(merged))
 
-    Array.prototype.splice.apply(arr, [temp, merged.length].concat(merged));
+    let newAnimation = [...mainArr]
+    arrays.push(newAnimation)
 }
 
-let testArray = []
-for (let i = 0; i < 10; i++) {
-    testArray.push(Math.floor(Math.random() * 1000))
+export const insertionSort = (array, setArray) => {
+    for (let i = 1; i < array.length; i++) {
+        setTimeout(() => {
+            let j = i;
+            while (j > 0) {
+                let arr = [...array]
+                if (arr[j].value < arr[j - 1].value) {
+                    swapValue(arr, j, j - 1)
+                    setArray(arr)
+                    j--
+                } else {
+                    break
+                }
+            }
+        }, i * 50)
+    }
 }
-mergeSort(testArray, 0, 9)
 
+export const quickSort = (array, setArray) => {
+    let arrayCopy = [...array]
+    let animations = []
+
+    quickSortHelper(animations, arrayCopy, 0, array.length - 1)
+
+    const sleep = ms => new Promise(r => setTimeout(r, ms))
+
+    const animate = async () => {
+        for (let i in animations) {
+            await sleep(40)
+            const array = animations[i]
+            setArray(array)
+        }
+    }
+
+    animate()
+}
+
+const quickSortHelper = (arrays, mainArr, ) => {
+    // TODO
+}
+
+const swapValue = (arr, i, j) => {
+    let temp = arr[i].value
+    arr[i].value = arr[j].value
+    arr[j].value = temp
+}
