@@ -29,7 +29,6 @@ export const mergeSort = (array, setArray) => {
         }
 
     }
-    console.log(animations.length)
     animate()
 }
 
@@ -109,17 +108,14 @@ export const quickSort = (array, setArray) => {
     let arrayCopy = [...array]
     let animations = []
 
-    printArray(arrayCopy)
     quickSortHelper(animations, arrayCopy, 0, array.length - 1)
-    console.log(animations.length)
 
     const sleep = ms => new Promise(r => setTimeout(r, ms))
-    // iterate throught the animations array and set the array to the current animation
+
     const animate = async () => {
         for (let i in animations) {
             await sleep(40)
             setArray(animations[i])
-            printArray(animations[i])
         }
     }
 
@@ -127,17 +123,12 @@ export const quickSort = (array, setArray) => {
 }
 
 export const quickSortHelper = (animations, mainArr, start, end) => {
-    // console.log("start: " + start + " end: " + end);
-    // printArray(mainArr)
     if (start >= end) { return }
-    console.log("======START===================")
-    for (let i in animations) {
-        printArray(animations[i])
-    }
 
     let pivot = mainArr[Math.floor((start + end) / 2)].value
     let left = start 
     let right = end
+
     while (left <= right) {
         while(mainArr[left].value < pivot) {
             left++
@@ -158,14 +149,6 @@ export const quickSortHelper = (animations, mainArr, start, end) => {
             left++
             right--
         }
-        console.log("============MIDDLE=============")
-        for (let i in animations) {
-            printArray(animations[i])
-        }
-    }
-    console.log("============END=============")
-    for (let i in animations) {
-        printArray(animations[i])
     }
 
     const index = left
