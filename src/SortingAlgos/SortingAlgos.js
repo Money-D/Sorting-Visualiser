@@ -25,12 +25,11 @@ export const mergeSort = (array, setArray) => {
     const animate = async () => {
         for (let i in animations) {
             await sleep(40)
-            const array = animations[i]
-            setArray(array)
+            setArray(animations[i])
         }
 
     }
-
+    console.log(animations.length)
     animate()
 }
 
@@ -110,27 +109,81 @@ export const quickSort = (array, setArray) => {
     let arrayCopy = [...array]
     let animations = []
 
+    printArray(arrayCopy)
     quickSortHelper(animations, arrayCopy, 0, array.length - 1)
+    console.log(animations.length)
 
     const sleep = ms => new Promise(r => setTimeout(r, ms))
-
+    // iterate throught the animations array and set the array to the current animation
     const animate = async () => {
         for (let i in animations) {
             await sleep(40)
-            const array = animations[i]
-            setArray(array)
+            setArray(animations[i])
+            printArray(animations[i])
         }
     }
 
     animate()
 }
 
-const quickSortHelper = (arrays, mainArr, ) => {
-    // TODO
+export const quickSortHelper = (animations, mainArr, start, end) => {
+    // console.log("start: " + start + " end: " + end);
+    // printArray(mainArr)
+    if (start >= end) { return }
+    console.log("======START===================")
+    for (let i in animations) {
+        printArray(animations[i])
+    }
+
+    let pivot = mainArr[Math.floor((start + end) / 2)].value
+    let left = start 
+    let right = end
+    while (left <= right) {
+        while(mainArr[left].value < pivot) {
+            left++
+        }
+        while(mainArr[right].value > pivot) {
+            right--
+        }
+        if (left <= right) {
+            swapValue(mainArr, left, right)
+            const newAnimation = []
+            for (let i = 0; i < mainArr.length; i++) {
+                newAnimation.push({
+                    value: mainArr[i].value,
+                    id: mainArr[i].id
+                })
+            }
+            animations.push(newAnimation)
+            left++
+            right--
+        }
+        console.log("============MIDDLE=============")
+        for (let i in animations) {
+            printArray(animations[i])
+        }
+    }
+    console.log("============END=============")
+    for (let i in animations) {
+        printArray(animations[i])
+    }
+
+    const index = left
+    quickSortHelper(animations, mainArr, start, index - 1)
+    quickSortHelper(animations, mainArr, index, end)
 }
 
 const swapValue = (arr, i, j) => {
     let temp = arr[i].value
     arr[i].value = arr[j].value
     arr[j].value = temp
+}
+
+// function that prints the values of array
+const printArray = (array) => {
+    let str = ""
+    for (let i = 0; i < array.length; i++) {
+        str += array[i].value + " "
+    }
+    console.log(str)
 }
